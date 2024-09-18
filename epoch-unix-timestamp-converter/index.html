@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unix Timestamp Converter - Convert Unix Time to Human Readable Format</title>
+    <meta name="description" content="Convert Unix timestamps to human-readable dates and vice versa. Learn about Unix time and its significance in computing.">
+    <meta name="keywords" content="Unix timestamp, epoch time, date converter, time conversion">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div id="ticker"></div>
+    <h1>Unix Timestamp Converter</h1>
+    
+    <div class="input-group">
+        <h2>Convert Timestamp to Date</h2>
+        <input type="number" id="timestamp" placeholder="Enter Unix Timestamp">
+        <button id="convertTimestamp">Convert</button>
+        <div class="result" id="timestampResult"></div>
+    </div>
+    
+    <div class="input-group">
+        <h2>Convert Date to Timestamp</h2>
+        <input type="datetime-local" id="datetime">
+        <button id="convertDate">Convert</button>
+        <div class="result" id="dateResult"></div>
+    </div>
+    
+    <div class="input-group">
+        <h2>Current Timestamp</h2>
+        <button id="getCurrentTimestamp">Get Current Timestamp</button>
+        <div class="result" id="currentResult"></div>
+    </div>
+    
+    <div id="explanation">
+        <h2>What is a Unix Timestamp?</h2>
+        <p>A Unix timestamp, also known as Unix time or POSIX time, represents the number of seconds that have elapsed since January 1, 1970, at 00:00:00 UTC, not counting leap seconds. This standardized time representation is widely used in computing and forms the basis for time-related calculations in many systems.</p>
+        <p>The concept of Unix time was introduced with the Unix operating system and has since been adopted by many other systems. It provides a simple and unambiguous way to represent a point in time, independent of time zones or other local variations.</p>
+        <p>For more information, you can refer to the following resources:</p>
+        <ul>
+            <li><a href="https://tools.ietf.org/html/rfc2822#section-3.3" target="_blank">RFC 2822 - Internet Message Format</a></li>
+            <li><a href="https://www.ietf.org/rfc/rfc3339.txt" target="_blank">RFC 3339 - Date and Time on the Internet: Timestamps</a></li>
+        </ul>
+    </div>
+
+    <h2>How to get the current epoch time in different programming languages</h2>
+    <table class="code-table">
+        <tr>
+            <th>Language</th>
+            <th>Code Example</th>
+        </tr>
+        <tr>
+            <td>JavaScript</td>
+            <td><span class="code-example">Math.floor(Date.now() / 1000)</span></td>
+        </tr>
+        <tr>
+            <td>Python</td>
+            <td><span class="code-example">import time; int(time.time())</span></td>
+        </tr>
+        <tr>
+            <td>PHP</td>
+            <td><span class="code-example">time()</span></td>
+        </tr>
+        <tr>
+            <td>Java</td>
+            <td><span class="code-example">(int) (System.currentTimeMillis() / 1000)</span></td>
+        </tr>
+        <tr>
+            <td>C#</td>
+            <td><span class="code-example">DateTimeOffset.UtcNow.ToUnixTimeSeconds()</span></td>
+        </tr>
+        <tr>
+            <td>C</td>
+            <td><span class="code-example">#include &lt;time.h&gt;<br>time(NULL)</span></td>
+        </tr>
+        <tr>
+            <td>Go</td>
+            <td><span class="code-example">import "time"<br>int(time.Now().Unix())</span></td>
+        </tr>
+        <tr>
+            <td>Unix Shell</td>
+            <td><span class="code-example">date +%s</span></td>
+        </tr>
+    </table>
+
+    <h2>Convert from human-readable date to Unix time in different programming languages</h2>
+    <table class="code-table">
+        <tr>
+            <th>Language</th>
+            <th>Code Example</th>
+        </tr>
+        <tr>
+            <td>JavaScript</td>
+            <td><span class="code-example">Math.floor(new Date('2023-04-15T12:00:00').getTime() / 1000)</span></td>
+        </tr>
+        <tr>
+            <td>Python</td>
+            <td><span class="code-example">import datetime; int(datetime.datetime(2023, 4, 15, 12, 0).timestamp())</span></td>
+        </tr>
+        <tr>
+            <td>PHP</td>
+            <td><span class="code-example">strtotime('2023-04-15 12:00:00')</span></td>
+        </tr>
+        <tr>
+            <td>Java</td>
+            <td><span class="code-example">LocalDateTime.of(2023, 4, 15, 12, 0).toEpochSecond(ZoneOffset.UTC)</span></td>
+        </tr>
+        <tr>
+            <td>C#</td>
+            <td><span class="code-example">new DateTimeOffset(2023, 4, 15, 12, 0, 0, TimeSpan.Zero).ToUnixTimeSeconds()</span></td>
+        </tr>
+        <tr>
+            <td>C</td>
+            <td><span class="code-example">#include &lt;time.h&gt;<br>struct tm t = {0};<br>strptime("2023-04-15 12:00:00", "%Y-%m-%d %H:%M:%S", &t);<br>time_t epoch = mktime(&t);</span></td>
+        </tr>
+        <tr>
+            <td>Go</td>
+            <td><span class="code-example">import "time"<br>t, _ := time.Parse("2006-01-02 15:04:05", "2023-04-15 12:00:00")<br>int(t.Unix())</span></td>
+        </tr>
+        <tr>
+            <td>Unix Shell</td>
+            <td><span class="code-example">date -d "2023-04-15 12:00:00" +%s</span></td>
+        </tr>
+    </table>
+
+    <h2>Convert from epoch to human-readable date in different programming languages</h2>
+    <table class="code-table">
+        <tr>
+            <th>Language</th>
+            <th>Code Example</th>
+        </tr>
+        <tr>
+            <td>JavaScript</td>
+            <td><span class="code-example">new Date(1681560000 * 1000).toUTCString()</span></td>
+        </tr>
+        <tr>
+            <td>Python</td>
+            <td><span class="code-example">import datetime; datetime.datetime.utcfromtimestamp(1681560000).strftime('%Y-%m-%d %H:%M:%S')</span></td>
+        </tr>
+        <tr>
+            <td>PHP</td>
+            <td><span class="code-example">date('Y-m-d H:i:s', 1681560000)</span></td>
+        </tr>
+        <tr>
+            <td>Java</td>
+            <td><span class="code-example">Instant.ofEpochSecond(1681560000).atZone(ZoneOffset.UTC).toString()</span></td>
+        </tr>
+        <tr>
+            <td>C#</td>
+            <td><span class="code-example">DateTimeOffset.FromUnixTimeSeconds(1681560000).ToString("yyyy-MM-dd HH:mm:ss")</span></td>
+        </tr>
+        <tr>
+            <td>C</td>
+            <td><span class="code-example">#include &lt;time.h&gt;<br>time_t epoch = 1681560000;<br>struct tm *t = gmtime(&epoch);<br>char buffer[30];<br>strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", t);</span></td>
+        </tr>
+        <tr>
+            <td>Go</td>
+            <td><span class="code-example">import "time"<br>time.Unix(1681560000, 0).UTC().Format("2006-01-02 15:04:05")</span></td>
+        </tr>
+        <tr>
+            <td>Unix Shell</td>
+            <td><span class="code-example">date -u -d @1681560000 "+%Y-%m-%d %H:%M:%S"</span></td>
+        </tr>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            function updateTicker() {
+                const now = Math.floor(Date.now() / 1000);
+                $("#ticker").text(`Current Unix Timestamp: ${now}`);
+            }
+
+            setInterval(updateTicker, 1000);
+            updateTicker();
+
+            function setDefaultDateTime() {
+                $("#datetime").val("T00:00");
+            }
+
+            setDefaultDateTime();
+
+            function timestampToDate(timestamp) {
+                const date = new Date(timestamp * 1000);
+                return {
+                    utc: date.toUTCString(),
+                    local: date.toString(),
+                    unix: timestamp
+                };
+            }
+
+            function dateToTimestamp(dateString) {
+                return Math.floor(new Date(dateString).getTime() / 1000);
+            }
+
+            function getDateFact(date) {
+                const month = date.getMonth() + 1; // getMonth() returns 0-11
+                const day = date.getDate();
+                
+                return $.ajax({
+                    url: `http://numbersapi.com/${month}/${day}/date`,
+                    dataType: 'text'
+                });
+            }
+
+            function getRandomAsciiArt() {
+                const asciiArt = [
+                    `  ___________
+ /           \\
+/  (•)   (•)  \\
+|     ___     |
+\\    \\___/    /
+ \\___________/`,
+
+                    `   /\\_/\\
+  ( o.o )
+   > ^ <`,
+
+                    ` _____
+/     \\
+|^   ^|
+|O   O|
+|  ~  |
+\\_____/`,
+
+                    `  ,_,
+ (.,.)
+ (   )
+ -"-"-`,
+
+                    `  /\\/\\
+ (o o)
+ (___) 
+  " "`,
+
+                    ` _____
+/  (•)   (•)  \\
+|     ___     |
+\\    \\___/    /
+ \\___________/`,
+
+                    `  /\\_/\\
+ ( o.o )
+  > ^ <
+ / - \\`,
+
+                    ` _____
+(     )
+ )° °(
+(  <  )
+ \\___/`,
+
+                    `  /\\_/\\
+ ((@v@))
+  |>.<|
+   \\_/`,
+
+                    ` _____
+/ o o \\
+\\  ^  /
+ |___|`
+                ];
+
+                return asciiArt[Math.floor(Math.random() * asciiArt.length)];
+            }
+
+            function displayResult(result, elementId) {
+                // Immediately display the table with timestamp conversion results
+                $(`#${elementId}`).html(`
+                    <table>
+                        <tr><th>GMT Time</th><td>${result.utc}</td></tr>
+                        <tr><th>Local Time</th><td>${result.local}</td></tr>
+                        <tr><th>Unix Timestamp</th><td>${result.unix}</td></tr>
+                        <tr><th>Interesting Fact</th><td id="${elementId}-fact">Loading...</td></tr>
+                        <tr><td colspan="2" id="${elementId}-art" style="text-align: center;"><pre style="margin: 0;">Loading ASCII art...</pre></td></tr>
+                    </table>
+                `).show();
+
+                // Asynchronously fetch and update the date fact and ASCII art
+                getDateFact(new Date(result.unix * 1000)).then(fact => {
+                    $(`#${elementId}-fact`).text(fact);
+                }).catch(error => {
+                    console.error('Error fetching date fact:', error);
+                    $(`#${elementId}-fact`).text('Unable to load fact');
+                });
+
+                // Generate and display ASCII art immediately (no need to wait for API)
+                const asciiArt = getRandomAsciiArt();
+                $(`#${elementId}-art`).html(`<pre style="margin: 0;">${asciiArt}</pre>`);
+            }
+
+            $("#convertTimestamp").click(function() {
+                const timestamp = $("#timestamp").val();
+                if (timestamp) {
+                    const result = timestampToDate(timestamp);
+                    displayResult(result, "timestampResult");
+                }
+            });
+
+            $("#convertDate").click(function() {
+                const dateString = $("#datetime").val();
+                if (dateString) {
+                    const timestamp = dateToTimestamp(dateString);
+                    const result = timestampToDate(timestamp);
+                    displayResult(result, "dateResult");
+                }
+            });
+
+            $("#getCurrentTimestamp").click(function() {
+                const now = Math.floor(Date.now() / 1000);
+                const result = timestampToDate(now);
+                displayResult(result, "currentResult");
+            });
+        });
+    </script>
+</body>
+</html>

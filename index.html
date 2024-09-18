@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Utilities and Converters - Epoch Converter</title>
+    <meta name="description" content="Free online developer utilities and converters. Convert between human-readable dates and Unix timestamps with our Epoch Converter.">
+    <meta name="keywords" content="developer tools, epoch converter, unix timestamp, date converter">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Developer Utilities and Converters</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Epoch Converter</h2>
+            <p>Convert between human-readable dates and Unix timestamps.</p>
+            <div class="converter">
+                <input type="text" id="epochInput" placeholder="Epoch timestamp">
+                <button onclick="convert()" aria-label="Convert"><i class="fas fa-exchange-alt"></i></button>
+                <input type="text" id="dateInput" placeholder="YYYY-MM-DD HH:MM:SS">
+            </div>
+            <a href="epoch-unix-timestamp-converter/index.html" class="button">Go to Full Epoch Converter</a>
+        </section>
+    </main>
+
+    <script>
+        function convert() {
+            const epochInput = document.getElementById('epochInput');
+            const dateInput = document.getElementById('dateInput');
+
+            if (epochInput.value) {
+                const date = new Date(parseInt(epochInput.value) * 1000);
+                dateInput.value = date.toISOString().slice(0, 19).replace('T', ' ');
+            } else if (dateInput.value) {
+                const epoch = Math.floor(new Date(dateInput.value).getTime() / 1000);
+                epochInput.value = epoch;
+            }
+        }
+    </script>
+</body>
+</html>

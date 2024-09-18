@@ -1,0 +1,124 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --background-color: #ecf0f1;
+    --text-color: #34495e;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+h1, h2 {
+    color: var(--secondary-color);
+}
+.input-group {
+    margin-bottom: 20px;
+}
+input, select {
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+}
+button {
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    display: inline-block;
+}
+button:hover {
+    background-color: #2980b9;
+}
+.result {
+    margin-top: 10px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: none; /* Hide result div by default */
+}
+#ticker {
+    text-align: center;
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: var(--primary-color);
+    color: white;
+}
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    h1 {
+        font-size: 24px;
+    }
+    h2 {
+        font-size: 20px;
+    }
+}
+.code-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.code-table th, .code-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+.code-table th {
+    background-color: var(--primary-color);
+    color: white;
+}
+.code-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+.code-example {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #f8f8f8;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.converter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.converter input {
+    flex: 1;
+    padding: 8px;
+    font-size: 16px;
+}
+
+.converter button {
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    /* Remove the background-color and border properties to use the original button styles */
+}
