@@ -1,8 +1,8 @@
 :root {
     --primary-color: #3498db;
     --secondary-color: #2c3e50;
-    --background-color: #ecf0f1;
-    --text-color: #34495e;
+    --background-color: #f5f7fa;
+    --text-color: #333333;
 }
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,8 +13,22 @@ body {
     color: var(--text-color);
 }
 h1, h2 {
-    color: var(--secondary-color);
+    color: #2c3e50;  /* Dark blue-gray color */
+    padding: 10px 0;
+    margin-bottom: 20px;
 }
+
+h1 {
+    font-size: 2em;  /* Reduced from 2.5em */
+    border-bottom: 2px solid #3498db;  /* Light blue border */
+}
+
+h2 {
+    font-size: 1.5em;  /* Reduced from 2em */
+    color: #34495e;  /* Slightly lighter than h1 for hierarchy */
+    border-bottom: 1px solid #3498db;  /* Thinner border for h2 */
+}
+
 .input-group {
     margin-bottom: 20px;
 }
@@ -145,4 +159,69 @@ footer {
     text-align: center;
     font-size: 14px;
     color: var(--secondary-color);
+}
+
+.footer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+    padding: 10px 0;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.prev-link,
+.home-link,
+.next-link {
+    flex: 1;
+    text-align: center;
+}
+
+.prev-link {
+    text-align: left;
+}
+
+.next-link {
+    text-align: right;
+}
+
+.footer-nav a {
+    text-decoration: none;
+    color: #3498db;  /* A blue color that stands out but isn't too bright */
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.footer-nav a:hover {
+    background-color: #f0f0f0;  /* Light grey background on hover */
+    color: #2980b9;  /* Slightly darker blue on hover */
+}
+
+.home-link a {
+    color: #2c3e50;  /* Darker color for the home link to differentiate it */
+}
+
+.home-link a:hover {
+    background-color: #e0e0e0;  /* Slightly darker background for home link on hover */
+}
+
+.disclaimer {
+    font-size: 0.8em;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    border-top: 1px solid #eee;
+}
+
+.disclaimer a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.disclaimer a:hover {
+    text-decoration: underline;
 }

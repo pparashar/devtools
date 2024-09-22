@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Undo the Last Git Commit | Sucoder</title>
+    <meta name="description" content="Learn various methods to undo the last Git commit, including soft and hard resets, and when to use each approach in your development workflow.">
+    <meta name="keywords" content="git, undo commit, version control, git reset, development workflow">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="canonical" href="https://sucoder.com/howto/undo-last-git-commit.html" />
+</head>
+<body>
+    <header>
+        <h1>How to Undo the Last Git Commit</h1>
+    </header>
+    <main>
+        <article>
+            <h2>Undoing Git Commits: A Comprehensive Guide</h2>
+            <p>In Git, it's common to make mistakes when committing changes. Fortunately, Git provides several ways to undo or modify your last commit. This guide will walk you through different scenarios and the appropriate commands to use.</p>
+            
+            <h3>1. Undo the last commit but keep the changes</h3>
+            <p>If you want to undo the last commit but keep the changes in your working directory, use:</p>
+            <pre><code>git reset HEAD~1</code></pre>
+            <p>This command moves the HEAD and branch pointer back by one commit, effectively "uncommitting" the changes but leaving them staged.</p>
+            
+            <h3>2. Undo the last commit and discard the changes</h3>
+            <p>To completely undo the last commit and discard all changes:</p>
+            <pre><code>git reset --hard HEAD~1</code></pre>
+            <p>Be cautious with this command as it permanently discards the changes.</p>
+            
+            <h3>3. Modify the last commit message</h3>
+            <p>If you just need to change the commit message of the last commit:</p>
+            <pre><code>git commit --amend</code></pre>
+            <p>This opens your default editor where you can modify the commit message.</p>
+            
+            <h3>4. Add forgotten changes to the last commit</h3>
+            <p>To add more changes to the last commit without creating a new commit:</p>
+            <pre><code>
+git add forgotten_file
+git commit --amend --no-edit
+            </code></pre>
+            <p>The --no-edit flag keeps the original commit message.</p>
+            
+            <h3>5. Undo a public commit</h3>
+            <p>If you've already pushed the commit, it's better to create a new commit that reverts the changes:</p>
+            <pre><code>git revert HEAD</code></pre>
+            <p>This creates a new commit that undoes the changes from the last commit.</p>
+            
+            <h3>Conclusion</h3>
+            <p>Understanding these Git commands allows you to maintain a clean and accurate commit history. Always be cautious when modifying history, especially in shared repositories, and communicate with your team when making significant changes to the commit history.</p>
+        </article>
+    </main>
+    <footer>
+        <div class="footer-nav">
+            <div class="prev-link">
+                <a href="understanding-sorted-vs-unsorted-array-performance.html">&lt; Understanding Sorted vs Unsorted Array Performance</a>
+            </div>
+            <div class="home-link">
+                <a href="/">Home</a>
+            </div>
+            <div class="next-link">
+                <a href="delete-local-and-remote-git-branches.html">How to Delete Local and Remote Git Branches &gt;</a>
+            </div>
+        </div>
+        <p>&copy; 2024 sucoder.com. All rights reserved. | <a href="/privacy.html">Privacy Policy</a> | <a href="/termsofuse.html">Terms of Use</a></p>
+    </footer>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J12GNGECE2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-J12GNGECE2');
+    </script>
+</body>
+</html>

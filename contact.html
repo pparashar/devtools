@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Sucoder</title>
+    <meta name="description" content="Get in touch with Sucoder for any questions, feedback, or concerns about our developer utilities and converters.">
+    <meta name="keywords" content="contact, sucoder, developer tools, feedback">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="canonical" href="https://sucoder.com/contact.html" />
+</head>
+<body>
+    <header>
+        <h1>Contact Us</h1>
+    </header>
+    <main>
+        <p>We value your feedback and are here to assist you. If you have any questions, concerns, or suggestions, please don't hesitate to reach out to us.</p>
+        <p>You can contact us at: <span id="contact-email"></span></p>
+    </main>
+    <footer>
+        <p>&copy; 2024 sucoder.com. All rights reserved. | <a href="/privacy.html">Privacy Policy</a> | <a href="/termsofuse.html">Terms of Use</a></p>
+    </footer>
+
+    <script>
+        function decodeEmail(encoded) {
+            return encoded.replace(/[a-zA-Z]/g, function(c) {
+                return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+            });
+        }
+
+        function displayEmail() {
+            var encoded = "cc@fhpbqre.pbz";
+            var decoded = decodeEmail(encoded);
+            decoded = decoded.replace("@", "[at]");
+            document.getElementById('contact-email').textContent = decoded;
+        }
+
+        window.onload = displayEmail;
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J12GNGECE2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-J12GNGECE2');
+    </script>
+</body>
+</html>
