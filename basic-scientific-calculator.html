@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧮 Galactic Scientific Calculator | Sucoder</title>
+    <meta name="description" content="Crunch cosmic numbers with our Galactic Scientific Calculator. Perfect for space mathematicians and earthling students alike!">
+    <meta name="keywords" content="scientific calculator, space math, galactic calculations, coding tools, trigonometry, logarithms">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="canonical" href="https://sucoder.com/basic-scientific-calculator.html" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3706436124859942"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <h1>Galactic Scientific Calculator 🧮</h1>
+        <p>Crunch numbers like a true space mathematician!</p>
+    </header>
+    <main>
+        <section>
+            <div class="calculator scientific-calculator">
+                <input type="text" class="calculator-screen" value="0" disabled />
+                <div class="calculator-keys">
+                    <button type="button" class="function" value="shift">Shift</button>
+                    <button type="button" class="function" value="alpha">Alpha</button>
+                    <button type="button" class="function" value="mode">Mode</button>
+                    <button type="button" class="all-clear" value="all-clear">AC</button>
+                    <button type="button" class="operator" value="/">&divide;</button>
+
+                    <button type="button" class="function" value="sqrt">&radic;</button>
+                    <button type="button" class="function" value="pow">x<sup>y</sup></button>
+                    <button type="button" value="7">7</button>
+                    <button type="button" value="8">8</button>
+                    <button type="button" value="9">9</button>
+
+                    <button type="button" class="function" value="sin">sin</button>
+                    <button type="button" class="function" value="cos">cos</button>
+                    <button type="button" value="4">4</button>
+                    <button type="button" value="5">5</button>
+                    <button type="button" value="6">6</button>
+
+                    <button type="button" class="function" value="tan">tan</button>
+                    <button type="button" class="function" value="log">log</button>
+                    <button type="button" value="1">1</button>
+                    <button type="button" value="2">2</button>
+                    <button type="button" value="3">3</button>
+
+                    <button type="button" class="function" value="(">(</button>
+                    <button type="button" class="function" value=")">)</button>
+                    <button type="button" value="0">0</button>
+                    <button type="button" class="decimal" value=".">.</button>
+                    <button type="button" class="function" value="exp">EXP</button>
+
+                    <button type="button" class="function" value="ln">ln</button>
+                    <button type="button" class="function" value="pi">&pi;</button>
+                    <button type="button" class="operator" value="-">&minus;</button>
+                    <button type="button" class="operator" value="+">&plus;</button>
+                    <button type="button" class="equal-sign" value="=">=</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="seo-content">
+            <h2>About Our Galactic Scientific Calculator</h2>
+            <p>Welcome to the Galactic Scientific Calculator, your go-to tool for all your advanced space math needs! Whether you're calculating the trajectory of your next interstellar journey or solving complex equations for your quantum physics homework, our calculator has got you covered.</p>
+            <p>Features of our Galactic Scientific Calculator include:</p>
+            <ul>
+                <li>Basic arithmetic operations (addition, subtraction, multiplication, division)</li>
+                <li>Trigonometric functions (sin, cos, tan)</li>
+                <li>Logarithmic functions (log, ln)</li>
+                <li>Exponential functions (e^x, x^y)</li>
+                <li>Square root and pi constant</li>
+                <li>Parentheses for complex expressions</li>
+                <li>Clear and easy-to-read display</li>
+                <li>Sleek, space-age design</li>
+            </ul>
+            <p>So strap in, fire up those neurons, and let's crunch some serious numbers across the cosmos!</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Galactic Code Academy (Earth Branch). All rights reserved across all known dimensions.</p>
+        <a href="index.html">Return to Galactic Code Academy Home</a>
+    </footer>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J12GNGECE2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-J12GNGECE2');
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculator = {
+                displayValue: '0',
+                firstOperand: null,
+                waitingForSecondOperand: false,
+                operator: null,
+            };
+
+            function updateDisplay() {
+                const display = document.querySelector('.calculator-screen');
+                display.value = calculator.displayValue;
+            }
+
+            function inputDigit(digit) {
+                const { displayValue, waitingForSecondOperand } = calculator;
+
+                if (waitingForSecondOperand === true) {
+                    calculator.displayValue = digit;
+                    calculator.waitingForSecondOperand = false;
+                } else {
+                    calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
+                }
+            }
+
+            function inputDecimal(dot) {
+                if (calculator.waitingForSecondOperand === true) {
+                    calculator.displayValue = "0."
+                    calculator.waitingForSecondOperand = false;
+                    return
+                }
+
+                if (!calculator.displayValue.includes(dot)) {
+                    calculator.displayValue += dot;
+                }
+            }
+
+            function handleOperator(nextOperator) {
+                const { firstOperand, displayValue, operator } = calculator
+                const inputValue = parseFloat(displayValue);
+
+                if (operator && calculator.waitingForSecondOperand)  {
+                    calculator.operator = nextOperator;
+                    return;
+                }
+
+                if (firstOperand == null && !isNaN(inputValue)) {
+                    calculator.firstOperand = inputValue;
+                } else if (operator) {
+                    const result = performCalculation[operator](firstOperand, inputValue);
+
+                    calculator.displayValue = `${parseFloat(result.toFixed(7))}`;
+                    calculator.firstOperand = result;
+                }
+
+                calculator.waitingForSecondOperand = true;
+                calculator.operator = nextOperator;
+            }
+
+            const performCalculation = {
+                '/': (firstOperand, secondOperand) => firstOperand / secondOperand,
+                '*': (firstOperand, secondOperand) => firstOperand * secondOperand,
+                '+': (firstOperand, secondOperand) => firstOperand + secondOperand,
+                '-': (firstOperand, secondOperand) => firstOperand - secondOperand,
+                '=': (firstOperand, secondOperand) => secondOperand
+            };
+
+            function resetCalculator() {
+                calculator.displayValue = '0';
+                calculator.firstOperand = null;
+                calculator.waitingForSecondOperand = false;
+                calculator.operator = null;
+            }
+
+            function handleFunction(func) {
+                const { displayValue } = calculator;
+                const inputValue = parseFloat(displayValue);
+
+                if (isNaN(inputValue)) return;
+
+                let result;
+                switch(func) {
+                    case 'sin':
+                        result = Math.sin(inputValue);
+                        break;
+                    case 'cos':
+                        result = Math.cos(inputValue);
+                        break;
+                    case 'tan':
+                        result = Math.tan(inputValue);
+                        break;
+                    case 'log':
+                        result = Math.log10(inputValue);
+                        break;
+                    case 'ln':
+                        result = Math.log(inputValue);
+                        break;
+                    case 'sqrt':
+                        result = Math.sqrt(inputValue);
+                        break;
+                    case 'pow':
+                        calculator.firstOperand = inputValue;
+                        calculator.waitingForSecondOperand = true;
+                        calculator.operator = 'pow';
+                        return;
+                    case 'exp':
+                        result = Math.exp(inputValue);
+                        break;
+                    case 'pi':
+                        result = Math.PI;
+                        break;
+                }
+
+                calculator.displayValue = `${parseFloat(result.toFixed(7))}`;
+                calculator.firstOperand = result;
+                calculator.waitingForSecondOperand = true;
+            }
+
+            function handleParentheses(parenthesis) {
+                calculator.displayValue += parenthesis;
+            }
+
+            const keys = document.querySelector('.calculator-keys');
+            keys.addEventListener('click', (event) => {
+                const { target } = event;
+                if (!target.matches('button')) {
+                    return;
+                }
+
+                if (target.classList.contains('operator')) {
+                    handleOperator(target.value);
+                    updateDisplay();
+                    return;
+                }
+
+                if (target.classList.contains('decimal')) {
+                    inputDecimal(target.value);
+                    updateDisplay();
+                    return;
+                }
+
+                if (target.classList.contains('all-clear')) {
+                    resetCalculator();
+                    updateDisplay();
+                    return;
+                }
+
+                if (target.classList.contains('function')) {
+                    if (target.value === '(' || target.value === ')') {
+                        handleParentheses(target.value);
+                    } else {
+                        handleFunction(target.value);
+                    }
+                    updateDisplay();
+                    return;
+                }
+
+                if (target.classList.contains('equal-sign')) {
+                    handleOperator(target.value);
+                    updateDisplay();
+                    return;
+                }
+
+                inputDigit(target.value);
+                updateDisplay();
+            });
+        });
+    </script>
+</body>
+</html>

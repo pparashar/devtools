@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Santa Matcher</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J12GNGECE2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-J12GNGECE2');
+    </script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        :root {
+            --christmas-red: #D42426;
+            --christmas-green: #165B33;
+            --snow-white: #F8F8FF;
+            --gold: #FFD700;
+        }
+
+        @font-face {
+            font-family: 'Mountains of Christmas';
+            src: url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap');
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--christmas-green), #0A2615);
+            font-family: 'Mountains of Christmas', cursive;
+            color: var(--snow-white);
+            overflow-x: hidden;
+        }
+
+        /* Festive Border */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 15px solid transparent;
+            border-image: linear-gradient(45deg, 
+                var(--christmas-red), 
+                var(--gold), 
+                var(--christmas-green), 
+                var(--gold)
+            ) 1;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Corner Decorations */
+        .corner-decoration {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            z-index: 1001;
+            font-size: 2.5em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: twinkleCorner 2s infinite ease-in-out;
+        }
+
+        .corner-top-left {
+            top: 10px;
+            left: 10px;
+        }
+
+        .corner-top-right {
+            top: 10px;
+            right: 10px;
+            transform: rotate(90deg);
+        }
+
+        .corner-bottom-left {
+            bottom: 10px;
+            left: 10px;
+            transform: rotate(-90deg);
+        }
+
+        .corner-bottom-right {
+            bottom: 10px;
+            right: 10px;
+            transform: rotate(180deg);
+        }
+
+        @keyframes twinkleCorner {
+            0%, 100% { opacity: 0.7; transform: scale(1) rotate(var(--rotation)); }
+            50% { opacity: 1; transform: scale(1.1) rotate(var(--rotation)); }
+        }
+
+        /* Adjust container to account for border */
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: var(--gold);
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        input {
+            padding: 12px 20px;
+            font-size: 1.2em;
+            border: 3px solid var(--gold);
+            border-radius: 25px;
+            background: rgba(255,255,255,0.9);
+            font-family: 'Mountains of Christmas', cursive;
+            width: 60%;
+            max-width: 300px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 25px;
+            background: var(--christmas-red);
+            color: var(--snow-white);
+            cursor: pointer;
+            font-family: 'Mountains of Christmas', cursive;
+            transition: transform 0.2s;
+            margin: 10px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .floating-names {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .name-tag {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid var(--gold);
+            border-radius: 15px;
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+            box-shadow: 0 0 10px rgba(255,215,0,0.2);
+        }
+
+        /* Simpler but elegant decorations */
+        .name-tag::before,
+        .name-tag::after {
+            content: '❄';
+            position: absolute;
+            color: var(--gold);
+            font-size: 1.2em;
+            animation: twinkle 2s infinite ease-in-out;
+        }
+
+        .name-tag::before {
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .name-tag::after {
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.5; transform: translateY(-50%) scale(1); }
+            50% { opacity: 1; transform: translateY(-50%) scale(1.2); }
+        }
+
+        .matches {
+            margin-top: 30px;
+        }
+
+        .match-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            opacity: 0;
+            position: relative;
+            font-size: 1.2em;
+            animation-fill-mode: forwards;
+            transform-origin: center;
+            --start-x: 0px;
+            --start-y: 0px;
+            --start-rotate: 0deg;
+        }
+
+        /* Add different color variations for match items */
+        .match-item:nth-child(4n+1) { background: rgba(212, 36, 38, 0.2); }  /* Red */
+        .match-item:nth-child(4n+2) { background: rgba(22, 91, 51, 0.2); }   /* Green */
+        .match-item:nth-child(4n+3) { background: rgba(255, 215, 0, 0.2); }  /* Gold */
+        .match-item:nth-child(4n+4) { background: rgba(65, 105, 225, 0.2); } /* Royal Blue */
+
+        .match-name {
+            color: var(--gold);
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255,215,0,0.3);
+        }
+
+        .match-arrow {
+            color: var(--snow-white);
+            opacity: 0.8;
+            font-size: 0.9em;
+            margin: 0 10px;
+            display: inline-block;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        /* Add new animations for match results */
+        @keyframes flyInFromRight {
+            from { transform: translateX(100vw) rotate(10deg); opacity: 0; }
+            to { transform: translateX(0) rotate(0deg); opacity: 1; }
+        }
+
+        @keyframes flyInFromLeft {
+            from { transform: translateX(-100vw) rotate(-10deg); opacity: 0; }
+            to { transform: translateX(0) rotate(0deg); opacity: 1; }
+        }
+
+        @keyframes flyInFromTop {
+            from { transform: translateY(-100vh) rotate(10deg); opacity: 0; }
+            to { transform: translateY(0) rotate(0deg); opacity: 1; }
+        }
+
+        @keyframes flyInFromBottom {
+            from { transform: translateY(100vh) rotate(-10deg); opacity: 0; }
+            to { transform: translateY(0) rotate(0deg); opacity: 1; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Snowfall Animation */
+        .snowflake {
+            position: fixed;
+            color: white;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            text-shadow: 0 0 5px #000;
+            user-select: none;
+            z-index: -1;
+        }
+
+        @keyframes snowfall {
+            0% { transform: translateY(-100vh); }
+            100% { transform: translateY(100vh); }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2em; }
+            input { width: 80%; }
+            .container { padding: 10px; }
+            body::before {
+                border-width: 10px;
+            }
+            .corner-decoration {
+                width: 40px;
+                height: 40px;
+                font-size: 2em;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px) rotate(-1deg); }
+            75% { transform: translateX(5px) rotate(1deg); }
+        }
+
+        .match-item.shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes flyOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100vw) rotate(20deg); opacity: 0; }
+        }
+
+        @keyframes zoomInEffect {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes spinInPlace {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes flyInAndShake {
+            0% { transform: translate(var(--start-x), var(--start-y)) rotate(var(--start-rotate)); opacity: 0; }
+            60% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+            70% { transform: translateX(-5px) rotate(-1deg); }
+            80% { transform: translateX(5px) rotate(1deg); }
+            90% { transform: translateX(-3px) rotate(-0.5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+        }
+
+        /* Add this style for the ads container */
+        .ads-container {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .ads-container.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Add these corner decorations -->
+    <div class="corner-decoration corner-top-left" style="--rotation: 0deg">🎄</div>
+    <div class="corner-decoration corner-top-right" style="--rotation: 90deg">🎄</div>
+    <div class="corner-decoration corner-bottom-left" style="--rotation: -90deg">🎄</div>
+    <div class="corner-decoration corner-bottom-right" style="--rotation: 180deg">🎄</div>
+
+    <div id="app" class="container">
+        <h1>🎅 Secret Santa Matcher 🎄</h1>
+        
+        <div class="input-group">
+            <input 
+                type="text" 
+                v-model="newName" 
+                @keyup.enter="addName"
+                placeholder="Enter a name..."
+            >
+            <button @click="addName">Add Name</button>
+        </div>
+
+        <div class="floating-names">
+            <div v-for="name in names" :key="name" class="name-tag">
+                {{ name }}
+            </div>
+        </div>
+
+        <div class="controls">
+            <button @click="matchSantas" v-if="names.length >= 3 && !matches.length">
+                🎁 Match Secret Santas!
+            </button>
+            <button @click="shuffleMatches" v-if="matches.length">
+                🎲 Shuffle Again
+            </button>
+            <button @click="clearAll">
+                ❌ Clear All
+            </button>
+        </div>
+
+        <div class="matches" v-if="matches.length">
+            <div v-for="(match, index) in matches" :key="index" class="match-item">
+                <span class="match-name">{{ match.santa }}</span>
+                <span class="match-arrow">🎅 ⟹ 🎁</span>
+                <span class="match-name">{{ match.recipient }}</span>
+            </div>
+        </div>
+
+        <!-- Add this new div for ads -->
+        <div class="ads-container" v-if="showAds" ref="adsContainer">
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3706436124859942"></script>
+            <!-- Secret Santa Matcher Ad -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3706436124859942"
+                 data-ad-slot="1000000000"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    newName: '',
+                    names: [],
+                    matches: [],
+                    showAds: false
+                }
+            },
+            mounted() {
+                // Load saved data from localStorage
+                const savedData = localStorage.getItem('secretSantaData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    this.names = data.names || [];
+                    this.matches = data.matches || [];
+                    
+                    // Show matches immediately without animation on page load
+                    if (this.matches.length > 0) {
+                        this.$nextTick(() => {
+                            const matchElements = document.querySelectorAll('.match-item');
+                            matchElements.forEach(element => {
+                                element.style.opacity = '1';
+                                element.style.transform = 'none';
+                            });
+                        });
+                    }
+                }
+
+                // Create snowflakes
+                this.createSnowflakes();
+            },
+            methods: {
+                addName() {
+                    const trimmedName = this.newName.trim();
+                    if (trimmedName) {
+                        if (this.names.some(name => name.toLowerCase() === trimmedName.toLowerCase())) {
+                            alert('This name is already in the list!');
+                            return;
+                        }
+                        // Add random fly-in direction for new name
+                        const nameTag = document.createElement('div');
+                        const randomAngle = Math.random() * 360;
+                        const distance = 1000;
+                        const flyX = Math.cos(randomAngle) * distance;
+                        const flyY = Math.sin(randomAngle) * distance;
+                        const rotate = (Math.random() - 0.5) * 180;
+                        
+                        nameTag.style.setProperty('--fly-x', `${flyX}px`);
+                        nameTag.style.setProperty('--fly-y', `${flyY}px`);
+                        nameTag.style.setProperty('--rotate', `${rotate}deg`);
+                        
+                        this.names.push(trimmedName);
+                        this.newName = '';
+                        this.saveToLocalStorage();
+                        
+                        // Track name added event
+                        gtag('event', 'add_name', {
+                            'event_category': 'engagement',
+                            'event_label': 'Name Added',
+                            'value': this.names.length
+                        });
+                    }
+                },
+                async matchSantas() {
+                    let recipients = [...this.names];
+                    let santas = [...this.names];
+                    this.matches = [];
+
+                    while (santas.length > 0) {
+                        const santa = santas.pop();
+                        let availableRecipients = recipients.filter(r => 
+                            r !== santa && 
+                            !this.matches.some(m => m.recipient === r)
+                        );
+
+                        if (availableRecipients.length === 0) {
+                            return this.matchSantas();
+                        }
+
+                        const recipientIndex = Math.floor(Math.random() * availableRecipients.length);
+                        const recipient = availableRecipients[recipientIndex];
+
+                        this.matches.push({ santa, recipient });
+                    }
+
+                    // Track matching event
+                    gtag('event', 'match_santas', {
+                        'event_category': 'engagement',
+                        'event_label': 'Match Generated',
+                        'value': this.names.length
+                    });
+                    
+                    this.saveToLocalStorage();
+                    // Show ads after matching
+                    this.showAds = true;
+                    
+                    // Animate matches after they're created
+                    this.$nextTick(() => {
+                        this.animateMatches();
+                    });
+                },
+                async animateMatches() {
+                    const animations = [
+                        'flyInFromLeft',
+                        'flyInFromRight',
+                        'flyInFromTop',
+                        'flyInFromBottom'
+                    ];
+                    
+                    const matchElements = document.querySelectorAll('.match-item');
+                    
+                    // Animate each match one by one
+                    for (let i = 0; i < matchElements.length; i++) {
+                        const element = matchElements[i];
+                        await this.animateSingleMatch(element, animations);
+                    }
+                },
+
+                async animateSingleMatch(element, animations) {
+                    return new Promise(resolve => {
+                        // Set random starting position
+                        const positions = [
+                            { x: '100vw', y: '0', rotate: '10deg' },    // from right
+                            { x: '-100vw', y: '0', rotate: '-10deg' },  // from left
+                            { x: '0', y: '-100vh', rotate: '10deg' },   // from top
+                            { x: '0', y: '100vh', rotate: '-10deg' }    // from bottom
+                        ];
+                        
+                        const randomPos = positions[Math.floor(Math.random() * positions.length)];
+                        
+                        element.style.setProperty('--start-x', randomPos.x);
+                        element.style.setProperty('--start-y', randomPos.y);
+                        element.style.setProperty('--start-rotate', randomPos.rotate);
+                        
+                        // Single continuous animation
+                        element.style.animation = 'flyInAndShake 1s ease-out forwards';
+                        
+                        // Wait for animation to complete
+                        setTimeout(resolve, 1000);
+                    });
+                },
+                async shuffleMatches() {
+                    // Track shuffle event
+                    gtag('event', 'shuffle_matches', {
+                        'event_category': 'engagement',
+                        'event_label': 'Matches Shuffled',
+                        'value': this.names.length
+                    });
+                    
+                    // First, animate all current matches flying out
+                    const currentMatches = document.querySelectorAll('.match-item');
+                    
+                    // Make all matches fly out simultaneously
+                    const flyOutPromises = Array.from(currentMatches).map(element => {
+                        return new Promise(resolve => {
+                            element.style.animation = 'flyOut 0.4s ease-in-out forwards';
+                            setTimeout(resolve, 400);
+                        });
+                    });
+
+                    // Wait for all matches to fly out
+                    await Promise.all(flyOutPromises);
+                    
+                    // Show ads after shuffling
+                    this.showAds = true;
+                    
+                    // Clear matches and create new ones
+                    this.matches = [];
+                    await this.$nextTick();
+                    this.matchSantas();
+                },
+                clearAll() {
+                    this.names = [];
+                    this.matches = [];
+                    this.newName = '';
+                    this.showAds = false;  // Hide ads when clearing
+                    localStorage.removeItem('secretSantaData');
+                },
+                saveToLocalStorage() {
+                    localStorage.setItem('secretSantaData', JSON.stringify({
+                        names: this.names,
+                        matches: this.matches
+                    }));
+                },
+                createSnowflakes() {
+                    const snowflakes = 50;
+                    const container = document.body;
+
+                    for (let i = 0; i < snowflakes; i++) {
+                        const snowflake = document.createElement('div');
+                        snowflake.className = 'snowflake';
+                        snowflake.textContent = '❄';
+                        
+                        // Random positioning and animation
+                        snowflake.style.left = Math.random() * 100 + 'vw';
+                        snowflake.style.animation = `snowfall ${5 + Math.random() * 10}s linear infinite`;
+                        snowflake.style.animationDelay = Math.random() * 5 + 's';
+                        snowflake.style.opacity = Math.random();
+                        snowflake.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                        
+                        container.appendChild(snowflake);
+                    }
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html> 

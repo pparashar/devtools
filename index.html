@@ -17,6 +17,105 @@
         <h1>Welcome to the Galactic Code Academy 🌌</h1>
         <p>Where bugs are more alien than the ones in Area 51! 👽</p>
     </header>
+
+    <!-- Add the festive banner here -->
+    <div class="santa-banner-container">
+        <style>
+            .santa-banner-container {
+                padding: 10px;
+                background: linear-gradient(45deg, #165B33, #D42426);
+                animation: gradientFlow 5s linear infinite;
+            }
+
+            .santa-banner {
+                display: block;
+                background: rgba(255,255,255,0.1);
+                padding: 20px;
+                text-align: center;
+                color: #FFD700;
+                text-decoration: none;
+                font-size: 1.3em;
+                font-weight: bold;
+                border: 2px solid #FFD700;
+                border-radius: 10px;
+                position: relative;
+                overflow: hidden;
+                transition: transform 0.3s ease;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                box-shadow: 0 0 20px rgba(255,215,0,0.2);
+            }
+
+            .santa-banner:hover {
+                transform: scale(1.02);
+            }
+
+            .santa-banner::before,
+            .santa-banner::after {
+                content: '🎄';
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 1.5em;
+                animation: bounce 1s ease-in-out infinite;
+            }
+
+            .santa-banner::before {
+                left: 20px;
+            }
+
+            .santa-banner::after {
+                right: 20px;
+            }
+
+            @keyframes bounce {
+                0%, 100% { transform: translateY(-50%); }
+                50% { transform: translateY(-70%); }
+            }
+
+            @keyframes gradientFlow {
+                0% { background-position: 0% 50%; }
+                100% { background-position: 200% 50%; }
+            }
+
+            .santa-banner .sparkle {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                pointer-events: none;
+            }
+
+            .santa-banner .sparkle::before {
+                content: '✨';
+                position: absolute;
+                animation: sparkleMove 2s linear infinite;
+                opacity: 0;
+            }
+
+            @keyframes sparkleMove {
+                0% { left: -5%; top: 50%; opacity: 0; }
+                50% { opacity: 1; }
+                100% { left: 105%; top: 50%; opacity: 0; }
+            }
+
+            @media (max-width: 600px) {
+                .santa-banner {
+                    font-size: 1.1em;
+                    padding: 15px;
+                }
+                .santa-banner::before,
+                .santa-banner::after {
+                    display: none;
+                }
+            }
+        </style>
+        <a href="ss.html" class="santa-banner">
+            🎅 NEW! Secret Santa Matcher - Create Your Holiday Gift Exchange! 🎁
+            <div class="sparkle"></div>
+        </a>
+    </div>
+
     <main>
         <section>
             <h2>Quantum Epoch Converter ⏳</h2>
@@ -29,6 +128,18 @@
             <a href="epoch-unix-timestamp-converter/index.html" class="button">Engage Full Quantum Converter 🚀</a>
         </section>
 
+        <!-- New Calculator Section -->
+        <section>
+            <h2>Galactic Quick Calculator 🧮</h2>
+            <p>Perform quick calculations or visit our full Galactic Calculator for advanced space math!</p>
+            <div class="quick-calculator">
+                <input type="text" id="quickCalcInput" placeholder="Enter expression (e.g., 2 + 2)">
+                <button onclick="quickCalculate()" class="quick-calc-button">Calculate</button>
+                <div id="quickCalcResult" class="quick-calc-result"></div>
+            </div>
+            <a href="basic-scientific-calculator.html" class="button">Launch Full Galactic Calculator 🚀🧮</a>
+        </section>
+
         <section>
             <h2>Intergalactic How-to Guides 📚</h2>
             <p>Unravel the mysteries of the coding cosmos with our pan-dimensional tutorials. 🌈</p>
@@ -39,7 +150,7 @@
                 <li><a href="howto/difference-between-git-pull-and-fetch.html">Git Pull vs Fetch: A Tale of Two Space-Time Manipulations 🕳️</a></li>
                 <li><a href="howto/understanding-yield-keyword-in-python.html">Python's Yield: Summoning Code Genies 🧞</a></li>
                 <li><a href="howto/understanding-javascript-closures.html">JavaScript Closures: Trapping Functions in the Event Horizon 🕳️</a></li>
-                <li><a href="howto/implementing-binary-search-algorithm.html">Binary Search: Finding Your Keys in a Black Hole 🔑</a></li>
+                <li><a href="howto/implementing-binary-search-algorithm.html">Binary Search: Finding Your Keys in a Black Hole ����</a></li>
                 <li><a href="howto/handling-cors-issues-in-web-development.html">CORS: Negotiating Peace Treaties Between Alien APIs 🤝</a></li>
                 <li><a href="howto/optimizing-database-queries-for-performance.html">Database Queries: Racing Lightspeed in the Data Universe 💨</a></li>
                 <li><a href="howto/implementing-authentication-in-web-applications.html">Web Authentication: Keeping Cybernetic Organisms at Bay 🔒</a></li>
@@ -174,6 +285,35 @@
             }, 500);
         }
         window.addEventListener('load', makeRobotDance);
+    </script>
+
+    <script>
+        function quickCalculate() {
+            const input = document.getElementById('quickCalcInput').value;
+            const resultElement = document.getElementById('quickCalcResult');
+            try {
+                const result = eval(input);
+                resultElement.textContent = result;
+            } catch (error) {
+                resultElement.textContent = 'Invalid';
+            }
+        }
+
+        document.getElementById('quickCalcInput').addEventListener('keydown', function(event) {
+            if (event.key === '=') {
+                event.preventDefault(); // Prevent '=' from being added to the input
+                quickCalculate();
+            }
+        });
+
+        document.getElementById('quickCalcInput').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                quickCalculate();
+            } else if (event.key !== '=') {
+                // Only clear the result if the key pressed is not '='
+                document.getElementById('quickCalcResult').textContent = '';
+            }
+        });
     </script>
 </body>
 </html>
